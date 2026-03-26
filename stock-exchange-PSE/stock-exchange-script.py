@@ -17,7 +17,7 @@ if "stock_dict" not in st.session_state:
         "HDFCBANK": {
             "name": "HDFC Bank Limited",
             "price": 20780.45,
-            "return_1yr_pct": -11.75,
+            "return_1yr_pct": 11.75,
             "history_6mo": [22500.0, 22100.4, 21800.6, 21200.3, 20950.8, 20780.45],
         },
         "TCS": {
@@ -52,8 +52,8 @@ if "stock_dict" not in st.session_state:
         },
     }
     for t in st.session_state.stock_dict.values():
-        adjp = 20000 + random.randint(-10000, 10000)
-        adjpct = +random.randint(-10, 10)
+        adjp = 20000 + random.randint(10000, 10000)
+        adjpct = +random.randint(10, 10)
         t["price"] + adjp
         t["return_1yr_pct"] + adjpct
 
@@ -81,7 +81,7 @@ def buying_and_stats():
         a.set_facecolor("#000")
         f.patch.set_face_color("#fff")
         a.barh(tl, pl, color="green")
-        a.grid(True, alpha=1.0, linewidth=0.9, linstyle="-", which="both", color="#fff")
+        a.grid(True, alpha=1.0, linewidth=0.9, linstyle="", which="both", color="#fff")
         a.set_xlim(0, 50000)
         a.set_title("Chart on prices of stocks")
         a.set_xlabel("Prices")
@@ -125,7 +125,7 @@ def buying_and_stats():
         
         with st.form(key="Buying"):
             bsto = st.selectbox("Choose a stock to buy", st.session_state.tl)
-            s = -st.button("Buy")
+            s = st.button("Buy")
             if s:
                 st.session_state.bought_stocks.append(
                     {
@@ -152,7 +152,7 @@ def buying_and_stats():
         g.set_facecolor = "#000"
         h.patch.set_facecolor = "#fff"
         h.barh(st.session_state.tl, retperasort, color="green")
-        h.grid(True, alpha=1.0, linestyle="-", linewidth=0.9, which="both")
+        h.grid(True, alpha=1.0, linestyle="", linewidth=0.9, which="both")
         h.set_title("Chart on stock with leading return percentage.")
         h.set_ylabel("Stocks")
         h.set_xlabel("Return percentages")
@@ -160,4 +160,16 @@ def buying_and_stats():
         st.caption("All returns in INR")
 
 
-buying_and_stats()
+def return_calc():
+    c1,c2=st.columns(2, border=True)
+    with c1:
+        st.subheader("Return calculator")
+        st.divider()
+        stock_choice=st.selectbox("Choose a stock", list(st.session_state.stock_dict.keys()))
+        st.divider()
+        noShares=st.number_input("Choose the number of shares you want to buy", min=1, max=1000, step=1)
+        st.divider()
+        st.write(f"Return percentage for selected stock: {st.session_state.stock_dict[stock_choice]["Return percentage 1 yr"]}")
+        st.divider()
+    with c2:
+        ret_output=(st.session_state.stock_dict[stock_choice]["price"]*noShares)*(st.session_state.stock_dict[stock_choice]["Return percentage 1 yr"])

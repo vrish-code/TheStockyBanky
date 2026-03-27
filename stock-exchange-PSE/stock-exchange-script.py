@@ -87,47 +87,33 @@ def buying_and_stats():
         st.divider()
         t1, t2, t3, t4, t5, t6, t7 = st.tabs(tl)
         with t1:
-            st.line_chart(
-                st.session_state.stock_dict[tl[0]].get("6 month history"), color="#2f0"
-            )
+            st.line_chart(st.session_state.stock_dict[tl[0]].get("6 month history"))
         with t2:
-            st.line_chart(
-                st.session_state.stock_dict[tl[1]].get("6 month history"), color="#2f0"
-            )
+            st.line_chart(st.session_state.stock_dict[tl[1]].get("6 month history"))
         with t3:
-            st.line_chart(
-                st.session_state.stock_dict[tl[2]].get("6 month history"), color="#2f0"
-            )
+            st.line_chart(st.session_state.stock_dict[tl[2]].get("6 month history"))
         with t4:
-            st.line_chart(
-                st.session_state.stock_dict[tl[3]].get("6 month history"), color="#2f0"
-            )
+            st.line_chart(st.session_state.stock_dict[tl[3]].get("6 month history"))
         with t5:
-            st.line_chart(
-                st.session_state.stock_dict[tl[4]].get("6 month history"), color="#2f0"
-            )
+            st.line_chart(st.session_state.stock_dict[tl[4]].get("6 month history"))
         with t6:
-            st.line_chart(
-                st.session_state.stock_dict[tl[5]].get("6 month history"), color="#2f0"
-            )
+            st.line_chart(st.session_state.stock_dict[tl[5]].get("6 month history"))
         with t7:
-            st.line_chart(
-                st.session_state.stock_dict[tl[6]].get("6 month history"), color="#2f0"
-            )
+            st.line_chart(st.session_state.stock_dict[tl[6]].get("6 month history"))
     with c2:
         st.subheader("Buying market")
         st.divider()
         with st.form(key="Buying"):
-            bsto = st.selectbox("Choose a stock to buy", st.session_state.tl)
-            s = -st.button("Buy")
-            if s:
-                st.session_state.bought_stocks.append(
-                    {
-                        "Ticker": tl.index(bsto),
-                        "Data": st.session_state.stock_dict[bsto],
-                    }
-                )
-                an.animation.ani(bsto, True, False, True)
+            bsto = st.selectbox("Choose a stock to buy", tl)
+            s = st.form_submit_button("Buy")
+        if s:
+            st.session_state.bought_stocks.append(
+                {
+                    "Ticker": tl.index(bsto),
+                    "Data": st.session_state.stock_dict[bsto],
+                }
+            )
+            an.animation.ani(bsto, True, False, True)
         st.divider()
         g, h = plt.subplots()
         g.set_facecolor = "#000"

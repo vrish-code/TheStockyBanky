@@ -162,7 +162,7 @@ def return_calc():
         st.divider()
 
 
-with st.sidebar():
+with st.sidebar:
     st.title("Sidebar")
     func = st.selectbox("Choose", ["Buying and stats", "Return calc"])
 if func == "Buying and stats":

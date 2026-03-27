@@ -74,7 +74,9 @@ def buying_and_stats():
         st.divider()
         f, a = plt.subplots()
         a.barh(tl, pl, color="green")
-        a.grid(True, alpha=1.0, linewidth=0.9, linstyle="-", which="both", color="#fff")
+        a.grid(
+            True, alpha=1.0, linewidth=0.9, linestyle="-", which="both", color="#fff"
+        )
         a.set_xlim(0, 50000)
         a.set_title("Chart on prices of stocks")
         a.set_xlabel("Prices")

@@ -160,3 +160,12 @@ def return_calc():
         )
         st.metric("Return output", f"₹{ret_output}")
         st.divider()
+
+
+with st.sidebar():
+    st.title("Sidebar")
+    func = st.selectbox("Choose", ["Buying and stats", "Return calc"])
+if func == "Buying and stats":
+    buying_and_stats()
+else:
+    return_calc()

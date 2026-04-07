@@ -30,9 +30,6 @@ plt.rcParams.update(
     }
 )
 
-if "bank_account" not in st.session_state:
-    st.session_state.bank_account: float = 0.0
-
 if "stock_dict" not in st.session_state:
     st.session_state.stock_dict = {
         "RELIANCE": {
@@ -138,10 +135,8 @@ if "stock_df" not in st.session_state:
     df = pd.DataFrame.from_dict(st.session_state.stock_dict, orient="index")
     df.index.name = "Ticker"
     st.session_state.stock_df = df.reset_index()
-if "bankAccount" not in st.session_state:
-    st.session_state.bankAccount = 1000000000000000.000
-if "brokerageAccount" not in st.session_state:
-    st.session_state.brokerageAccount: float = 0.000
+
+
 if "name" not in st.session_state:
     names = [
         "Liam",
@@ -548,12 +543,7 @@ def portfolio_and_selling():
                             f"Unrealised returns for {st.session_state.bought_stocks[i]["Ticker"]}",
                             f"{st.session_state.bought_stocks[i]["Return Percentage 1 yr"]/100*st.session_state.bought_stocks[i]["Price 1 share"]:.2f} INR",
                         )
-            with st.expander("Bank account value"):
-                st.metric("Bank account", f"{st.session_state.bankAccount:.2f}INR")
-            with st.expander("Brokerage account value"):
-                st.metric(
-                    "Brokerage account", f"{st.session_state.brokerageAccount:.2f}INR"
-                )
+
         with c4:
             st.subheader("Selling market")
             st.divider()
@@ -577,27 +567,28 @@ def portfolio_and_selling():
                     ],
                     1,
                 )
-                buy = st.button("Buy")
+                sell = st.button("Sell")
                 st.warning(
                     "Do not click the same stock on the dropdown and the sell button twice or more."
                 )
-            if buy:
-                st.session_state.sold_stocks.append(
-                    {
-                        "Ticker": sellStock,
-                        "Name": st.session_state.stock_dict[sellStock]["Name"],
-                        "Price (1 share)": st.session_state.stock_dict[sellStock][
-                            "Price (1 share)"
-                        ],
-                        "Return Percentage 1 yr": st.session_state.stock_dict[
-                            sellStock
-                        ]["Return Percentage 1 yr"],
-                        "6 month history": st.session_state.stock_dict[sellStock][
-                            "6 month history"
-                        ],
-                        "No of shares bought": sellShares,
-                    }
-                )
+                if sell:
+                    st.session_state.sold_stocks.append(
+                        {
+                            "Ticker": sellStock,
+                            "Name": st.session_state.stock_dict[sellStock]["Name"],
+                            "Price (1 share)": st.session_state.stock_dict[sellStock][
+                                "Price (1 share)"
+                            ],
+                            "Return Percentage 1 yr": st.session_state.stock_dict[
+                                sellStock
+                            ]["Return Percentage 1 yr"],
+                            "6 month history": st.session_state.stock_dict[sellStock][
+                                "6 month history"
+                            ],
+                            "No of shares bought": sellShares,
+                        }
+                    )
+                    an.ani(True, False, True, sellStock)
 
     else:
         st.error("No stocks bought!")

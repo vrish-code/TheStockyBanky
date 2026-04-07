@@ -12,13 +12,3 @@ def ani(anivar: bool, bought: bool, sold: bool, svar):
                 st.balloons()
         except Exception as e:
             raise RuntimeError(f"animate.InputError {e}")
-
-
-def aniCustom(anivar: bool, aniString: str, negativeBank: bool):
-    if anivar == True:
-        try:
-            st.toast(f"{aniString}!")
-            if negativeBank == False:
-                st.balloons()
-        except Exception as e:
-            raise RuntimeError(f"animate.InputError {e}")

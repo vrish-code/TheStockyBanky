@@ -133,10 +133,6 @@ if "stock_df" not in st.session_state:
     df = pd.DataFrame.from_dict(st.session_state.stock_dict, orient="index")
     df.index.name = "Ticker"
     st.session_state.stock_df = df.reset_index()
-if "bankAcc" not in st.session_state:
-    st.session_state.bankAcc = {"Balance": 1000000000.67}
-if "dematAcc" not in st.session_state:
-    st.session_state.dematAcc = {}
 
 if "name" not in st.session_state:
     names = [
@@ -272,14 +268,12 @@ def buying_and_stats():
             st.caption("All returns in INR")
             st.divider()
 
-            with st.form(key="Buying"):
+            with st.container(border=True):
                 buyStock = st.selectbox("Choose a stock to buy", tl)
                 noS = st.number_input(
-                    "Choose the number of shares you want to buy",
-                    1,
-                    1,
+                    "Choose the number of shares you want to buy", 1, None, 1
                 )
-                s = st.form_submit_button("Buy")
+                s = st.button("Buy")
                 st.warning(
                     "Do not click the same stock on the dropdown and the buy button twice or more."
                 )
@@ -301,17 +295,6 @@ def buying_and_stats():
                         "No of shares bought": noS,
                     }
                 )
-                for i in range(len(st.session_state.bought_stocks[i])):
-                    st.session_state.bankAcc["Balance"] -= (
-                        st.session_state.bought_stocks[i]["Price"]
-                        * st.session_state.bought_stocks[i]["No of shares bought"]
-                    )
-                    st.session_state.dematAcc[
-                        st.session_state.bought_stocks[i]["Ticker"]
-                    ] += (
-                        st.session_state.bought_stocks[i]["Price"]
-                        * st.session_state.bought_stocks[i]["No of shares bought"]
-                    )
                 an.ani(True, True, False, buyStock)
 
     with st.container(border=True):
@@ -402,204 +385,22 @@ def portfolio_and_selling():
             )
         )
 
-        totPL = totInv - sum(
-            st.session_state.bought_stocks[o]["Price (1 share)"]
-            for o in range(len(st.session_state.bought_stocks))
+        totRet = (
+            sum(
+                st.session_state.bought_stocks[p]["Return percentage 1 yr"]
+                for p in st.session_state.bought_stocks
+            )
+            * sum(
+                st.session_state_bought_stocks[i]["No of shares bought"]
+                for i in st.session_state.bought_stocks
+            )
+            / sum(
+                st.session_state_bought_stocks[l]["No of shares bought"]
+                for l in st.session_state.bought_stocks
+            )
         )
-        c1, c2, c3, c4 = st.columns(4, border=True)
-        with c1:
-            with st.container(border=True):
-                c1, c2 = st.columns(
-                    2,
-                    gap="large",
-                )
-
-                with c1:
-                    with st.expander("Total investement made"):
-                        st.metric("Total investment", f"{totInv:.2f} INR")
-
-                    with st.expander("Total profit/loss"):
-                        st.metric(
-                            "Total P/L",
-                            f"{totPL:.2f} INR",
-                            f"{totPL / totInv * 100:.2f}%",
-                        )
-
-                with c2:
-                    with st.expander("Total returns"):
-                        tabs = st.tabs(
-                            list(
-                                st.session_state.bought_stocks[p].get("Ticker")
-                                for p in range(len(st.session_state.bought_stocks))
-                            )
-                        )
-
-                        for o, p in enumerate(tabs):
-                            with p:
-                                st.metric(
-                                    f"{st.session_state.bought_stocks[o]['Ticker']}",
-                                    f"{st.session_state.bought_stocks[o]['Return Percentage 1 yr'] * st.session_state.bought_stocks[o]['No of shares bought']:.2f}%",
-                                )
-
-                    with st.expander("Total shares bought for each stock"):
-                        tabs = st.tabs(
-                            list(
-                                st.session_state.bought_stocks[p].get("Ticker")
-                                for p in range(len(st.session_state.bought_stocks))
-                            )
-                        )
-
-                        for i, t in enumerate(tabs):
-                            with t:
-                                st.metric(
-                                    f"No of shares bought for {st.session_state.bought_stocks[i]['Ticker']}",
-                                    st.session_state.bought_stocks[i][
-                                        "No of shares bought"
-                                    ],
-                                )
-
-        st.divider()
-        with st.container(key="portWeight", border=True):
-            poWeightDict = {}
-
-            for y in range(len(st.session_state.bought_stocks)):
-                poWeightDict[st.session_state.bought_stocks[y]["Ticker"]] = round(
-                    (
-                        st.session_state.bought_stocks[y]["Price (1 share)"]
-                        * st.session_state.bought_stocks[y]["No of shares bought"]
-                        / totInv
-                        * 100
-                    ),
-                    2,
-                )
-
-            poWeightDf = pd.DataFrame(
-                list(poWeightDict.items()),
-                columns=[
-                    "Tickers",
-                    "Share owned in portfolio",
-                ],
-            )
-
-            st.dataframe(poWeightDf, hide_index=True)
-
-            j, k = plt.subplots()
-            k.barh(
-                list(poWeightDict.keys()),
-                list(poWeightDict.values()),
-                height=0.3,
-                color="#00FFFF",
-            )
-            k.grid(
-                True,
-                which="both",
-                axis="both",
-                alpha=1.0,
-                linewidth=0.8,
-                linestyle="-",
-                aa=True,
-                color="#fff",
-            )
-            k.set_xlim(0, 100)
-            k.set_xlabel("Percentages of portfolio owned")
-            k.set_ylabel("Stocks owned")
-
-            st.pyplot(j)
-
-        st.divider()
-        with c2:
-            with st.container(border=True):
-                ta = st.tabs(
-                    list(
-                        st.session_state.bought_stocks[x]["Ticker"]
-                        for x in range(len(st.session_state.bought_stocks))
-                    )
-                )
-                for i, t in enumerate(ta):
-                    with t:
-                        with st.container(border=True):
-                            st.dataframe(
-                                pd.DataFrame(
-                                    list(st.session_state.bought_stocks[i].items()),
-                                    columns=["Category", "Value"],
-                                ),
-                                hide_index=True,
-                            )
-                        with st.container(border=True):
-                            st.line_chart(
-                                st.session_state.bought_stocks[i].get(
-                                    "6 month history"
-                                ),
-                                color="#3CB371",
-                            )
-        with c3:
-            with st.expander("Unrealised returns"):
-                tabS = st.tabs(
-                    list(
-                        st.session_state.bought_stocks[y]["Ticker"]
-                        for y in range(len(st.session_state.bought_stocks))
-                    ).append("Total unrealised returns")
-                )
-                for i, t in enumeratedsf(tabS):
-                    with t:
-                        st.metric(
-                            f"Unrealised returns for {st.session_state.bought_stocks[i]["Ticker"]}",
-                            f"{st.session_state.bought_stocks[i]["Return Percentage 1 yr"]/100*st.session_state.bought_stocks[i]["Price 1 share"]:.2f} INR",
-                        )
-        with c4:
-            st.subheader("Selling market")
-            st.divider()
-            with st.container(border=True):
-                sellStock = st.selectbox(
-                    "Choose a stock to sell",
-                    list(
-                        st.session_state.bought_stocks[x]["Ticker"]
-                        for x in range(len(st.session_state.bought_stocks))
-                    ),
-                )
-                sellNoShares = st.number_input(
-                    "Choose how many shares you want to sell",
-                    1,
-                    st.session_state.bought_stocks[
-                        next(
-                            i
-                            for i, d in enumerate(st.session_state.bought_stocks)
-                            if d.get("Ticker") == sellStock
-                        )
-                    ],
-                    1,
-                )
-                sell = st.button("Sell")
-                st.warning(
-                    "Do not click the same stock on the dropdown and the sell button twice or more."
-                )
-                if sell:
-                    st.session_state.sold_stocks.append(
-                        {
-                            "Ticker": sellStock,
-                            "Name": st.session_state.stock_dict[sellStock]["Name"],
-                            "Price (1 share)": st.session_state.stock_dict[sellStock][
-                                "Price (1 share)"
-                            ],
-                            "Return Percentage 1 yr": st.session_state.stock_dict[
-                                sellStock
-                            ]["Return Percentage 1 yr"],
-                            "6 month history": st.session_state.stock_dict[sellStock][
-                                "6 month history"
-                            ],
-                            "No of shares bought": sellShares,
-                        }
-                    )
-                    st.session_state.bankAcc["Balance"] += st.session_state.dematAcc[
-                        sellStock
-                    ]
-                    for i in range(len(st.session_state.sold_stocks)):
-                        st.session_state.bankAcc["Balance"] += (
-                            st.session_state.bought_stocks[i]["Return Percentage 1 yr"]
-                            / 100
-                            * st.session_state.bought_stocks[i]["Price 1 share"]
-                        )
-                    an.ani(True, False, True, sellStock)
+        totPL = totRet / 100 * totInv
+        totPortVal = totInv + totPL
 
     else:
         st.error("No stocks bought!")

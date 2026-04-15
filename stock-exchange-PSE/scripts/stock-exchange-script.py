@@ -3,6 +3,8 @@ import random
 import streamlit as st
 import pandas as pd
 import requests as r
+import os
+
 
 st.set_page_config(
     page_title="PSE Stock Simulator",
@@ -437,7 +439,10 @@ def portfolio_and_selling():
 
 
 def chatbot():
-    API_KEY = st.secrets["CHATBOT_API_KEY"]
+    from dotenv import load_dotenv
+
+    load_dotenv()
+    API_KEY = os.environ.get("API-KEY")
     with st.container(border=True):
         prompt = st.chat_input("Enter a prompt")
     realPrompt = f"Stock dict:{st.session_state.stock_dict}, Bought stocks: {st.session_state.bought_stocks}, Sold stocks: {st.session_state.sold_stocks}, bank account: {st.session_state.bankAcc}, demat account: {st.session_state.demat}, {prompt}"
@@ -449,7 +454,7 @@ def chatbot():
         resp = r.post(
             "https://openrouter.ai/api/v1/chat/completions",
             headers={
-                "Authorization": f"Bearer {st.secrets['CHATBOT_API_KEY']}",
+                "Authorization": f"Bearer {API_KEY}",
                 "Content-Type": "application/json",
             },
             json={

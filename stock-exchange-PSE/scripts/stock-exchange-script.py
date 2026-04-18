@@ -3,8 +3,7 @@ import random
 import streamlit as st
 import pandas as pd
 import requests as r
-import os
-
+import json
 
 st.set_page_config(
     page_title="PSE Stock Simulator",
@@ -433,15 +432,15 @@ def portfolio_and_selling():
                         st.line_chart(
                             st.session_state.bought_stocks[i]["6 month history"]
                         )
+        with c2:
+            st.subheader("Selling")
+            with st.container(border=True)
 
     else:
         st.error("No stocks bought!")
 
 
 def chatbot():
-    from dotenv import load_dotenv
-
-    load_dotenv()
     API_KEY = os.environ.get("API-KEY")
     with st.container(border=True):
         prompt = st.chat_input("Enter a prompt")

@@ -28,120 +28,127 @@ plt.rcParams.update(
     }
 )
 
+
+def save(data):
+    with open("C:\Users\karth\OneDrive\Desktop\apikey.json", "r", encoding="utf-8") as f:
+        apikeys=json.load(f)
+    
+    save_json=r.put(
+        "https://api.jsonstorage.net/v1/json/437555fb-6879-4dcc-b086-0b559e9e8e49/b7742efe-514a-4bb0-b2fb-caca14793ac6?",
+        json=data,
+        headers={
+    "Content-Type": "application/json",
+    "apiKey": apikeys["api-key-json"]
+}
+    )
+def load(data):
+    get_json=r.get(
+        "https://api.jsonstorage.net/v1/json/437555fb-6879-4dcc-b086-0b559e9e8e49/b7742efe-514a-4bb0-b2fb-caca14793ac6"
+    ).json()
+    return get_json
+
+
 if "stock_dict" not in st.session_state:
     st.session_state.stock_dict = {
-        "RELIANCE": {
-            "Name": "Reliance Industries Limited",
-            "Price (1 share)": 21414.40 + random.randint(100, 100000),
-            "Return Percentage 1 yr": 13.30 - random.randint(-10, 10),
-            "6 month history": [
-                20100.5,
-                20550.2,
-                20300.8,
-                20900.4,
-                21200.1,
-                21414.4,
-            ],
+        "Stocks available": {
+            "RELIANCE": {
+                "Name": "Reliance Industries Limited",
+                "Price (1 share)": 21414.40 + random.randint(100, 100000),
+                "Return Percentage 1 yr": 13.30 - random.randint(-10, 10),
+                "6 month history": [
+                    20100.5,
+                    20550.2,
+                    20300.8,
+                    20900.4,
+                    21200.1,
+                    21414.4,
+                ],
+            },
+            "HDFCBANK": {
+                "Name": "HDFC Bank Limited",
+                "Price (1 share)": 20780.45 - random.randint(100, 100000),
+                "Return Percentage 1 yr": -11.75 + random.randint(-10, 10),
+                "6 month history": [
+                    22500.0,
+                    22100.4,
+                    21800.6,
+                    21200.3,
+                    20950.8,
+                    20780.45,
+                ],
+            },
+            "TCS": {
+                "Name": "Tata Consultancy Services Limited",
+                "Price (1 share)": 22390.60 + random.randint(100, 100000),
+                "Return Percentage 1 yr": 1.41 - random.randint(-10, 10),
+                "6 month history": [
+                    22100.2,
+                    22250.5,
+                    22050.1,
+                    22400.9,
+                    22300.4,
+                    22390.6,
+                ],
+            },
+            "ICICIBANK": {
+                "Name": "ICICI Bank Limited",
+                "Price (1 share)": 21245.40 - random.randint(100, 100000),
+                "Return Percentage 1 yr": 18.20 + random.randint(-10, 10),
+                "6 month history": [
+                    18500.4,
+                    19200.8,
+                    19850.2,
+                    20400.6,
+                    20900.1,
+                    21245.4,
+                ],
+            },
+            "INFY": {
+                "Name": "Infosys Limited",
+                "Price (1 share)": 21255.90 + random.randint(100, 100000),
+                "Return Percentage 1 yr": 5.40 - random.randint(-10, 10),
+                "6 month history": [
+                    20200.1,
+                    20500.4,
+                    20850.7,
+                    21000.3,
+                    21150.9,
+                    21255.9,
+                ],
+            },
+            "SBIN": {
+                "Name": "State Bank of India",
+                "Price (1 share)": 21058.00 - random.randint(100, 100000),
+                "Return Percentage 1 yr": 31.40 + random.randint(-10, 10),
+                "6 month history": [
+                    16500.5,
+                    17800.2,
+                    18900.8,
+                    19700.4,
+                    20500.1,
+                    21058.0,
+                ],
+            },
+            "BHARTIARTL": {
+                "Name": "Bharti Airtel Limited",
+                "Price (1 share)": 21846.10 + random.randint(100, 100000),
+                "Return Percentage 1 yr": 42.10 - random.randint(-10, 10),
+                "6 month history": [
+                    15800.2,
+                    17200.5,
+                    18500.1,
+                    19900.9,
+                    21000.4,
+                    21846.1,
+                ],
+            },
         },
-        "HDFCBANK": {
-            "Name": "HDFC Bank Limited",
-            "Price (1 share)": 20780.45 - random.randint(100, 100000),
-            "Return Percentage 1 yr": -11.75 + random.randint(-10, 10),
-            "6 month history": [
-                22500.0,
-                22100.4,
-                21800.6,
-                21200.3,
-                20950.8,
-                20780.45,
-            ],
-        },
-        "TCS": {
-            "Name": "Tata Consultancy Services Limited",
-            "Price (1 share)": 22390.60 + random.randint(100, 100000),
-            "Return Percentage 1 yr": 1.41 - random.randint(-10, 10),
-            "6 month history": [
-                22100.2,
-                22250.5,
-                22050.1,
-                22400.9,
-                22300.4,
-                22390.6,
-            ],
-        },
-        "ICICIBANK": {
-            "Name": "ICICI Bank Limited",
-            "Price (1 share)": 21245.40 - random.randint(100, 100000),
-            "Return Percentage 1 yr": 18.20 + random.randint(-10, 10),
-            "6 month history": [
-                18500.4,
-                19200.8,
-                19850.2,
-                20400.6,
-                20900.1,
-                21245.4,
-            ],
-        },
-        "INFY": {
-            "Name": "Infosys Limited",
-            "Price (1 share)": 21255.90 + random.randint(100, 100000),
-            "Return Percentage 1 yr": 5.40 - random.randint(-10, 10),
-            "6 month history": [
-                20200.1,
-                20500.4,
-                20850.7,
-                21000.3,
-                21150.9,
-                21255.9,
-            ],
-        },
-        "SBIN": {
-            "Name": "State Bank of India",
-            "Price (1 share)": 21058.00 - random.randint(100, 100000),
-            "Return Percentage 1 yr": 31.40 + random.randint(-10, 10),
-            "6 month history": [
-                16500.5,
-                17800.2,
-                18900.8,
-                19700.4,
-                20500.1,
-                21058.0,
-            ],
-        },
-        "BHARTIARTL": {
-            "Name": "Bharti Airtel Limited",
-            "Price (1 share)": 21846.10 + random.randint(100, 100000),
-            "Return Percentage 1 yr": 42.10 - random.randint(-10, 10),
-            "6 month history": [
-                15800.2,
-                17200.5,
-                18500.1,
-                19900.9,
-                21000.4,
-                21846.1,
-            ],
-        },
-    }
-
-if "bought_stocks" not in st.session_state:
-    st.session_state.bought_stocks = {}
-if "bankAcc" not in st.session_state:
-    st.session_state.bankAcc = {
-        "Balance": 100000000.676767 + random.randint(-10000, 100000)
-    }
-if "demat" not in st.session_state:
-    st.session_state.demat = {}
-if "sold_stocks" not in st.session_state:
-    st.session_state.sold_stocks = {}
-
-if "stock_df" not in st.session_state:
-    df = pd.DataFrame.from_dict(st.session_state.stock_dict, orient="index")
-    df.index.name = "Ticker"
-    st.session_state.stock_df = df.reset_index()
-if "realisedPL" not in st.session_state:
-    st.session_state.realisedPL = 0.00
-if "name" not in st.session_state:
-    names = [
+        "Bought stocks": {},
+        "Sold stocks": {},
+        "Bank account": {"Balance": 100000000.676767 + random.randint(-10000, 100000)},
+        "Demat":{},
+        "realisedPL":0.00,
+        "Name": random.choice([
         "Liam",
         "Olivia",
         "Noah",
@@ -192,9 +199,8 @@ if "name" not in st.session_state:
         "Penelope",
         "Ezra",
         "Elena",
-    ]
-    st.session_state.name = random.choice(names)
-
+    ])
+    }
 
 def buying_and_stats():
     st.title("View stocks!")
@@ -285,12 +291,12 @@ def buying_and_stats():
                 )
 
             if s:
-                st.session_state.bought_stocks[buyStock] = st.session_state.stock_dict[
+                st.session_state.stock_dict["Bought stocks"][buyStock] = st.session_state.stock_dict[
                     buyStock
                 ].copy()
-                st.session_state.bought_stocks[buyStock]["No of shares bought"] = noS
-                st.session_state.demat[buyStock] = 0
-                st.session_state.demat[buyStock] += (
+                st.session_state.stock_dict["Bought stocks"][buyStock]["No of shares bought"] = noS
+                st.session_state.stock_dict["Demat"][buyStock] = 0
+                st.session_state.stock_dict["Demat"][buyStock] += (
                     st.session_state.stock_dict[buyStock]["Price (1 share)"] * noS
                 ) * (
                     st.session_state.stock_dict[buyStock]["Return Percentage 1 yr"]
@@ -298,9 +304,9 @@ def buying_and_stats():
                 ) + (
                     st.session_state.stock_dict[buyStock]["Price (1 share)"] * noS
                 )
-                st.session_state.bankAcc["Balance"] -= (
+                st.session_state.stock_dict["Bank account"]["Balance"] -= (
                     st.session_state.stock_dict[buyStock]["Price (1 share)"]
-                    * st.session_state.bought_stocks[buyStock]["No of shares bought"]
+                    * st.session_state.stock_dict["Bought stocks"][buyStock]["No of shares bought"]
                 )
                 st.success(f"You bought {buyStock}!")
 
@@ -384,11 +390,11 @@ def chatbot():
         API_KEY = json.load(f)["api-key"]
     with st.container(border=True):
         prompt = st.chat_input("Enter a prompt")
-    realPrompt = f"Stock dict:{st.session_state.stock_dict}, Bought stocks: {st.session_state.bought_stocks}, Sold stocks: {st.session_state.sold_stocks}, bank account: {st.session_state.bankAcc}, demat account: {st.session_state.demat}, {prompt}"
+    realPrompt = f"Stock dict:{st.session_state.stock_dict}, Bought stocks: {st.session_state.stock_dict["Bought stocks"]}, Sold stocks: {st.session_state.stock_dict["Sold stocks"]}, bank account: {st.session_state.stock_dict["Bank account"]}, demat account: {st.session_state.stock_dict["Demat"]}, {prompt}"
     with st.container(border=True):
         with st.chat_message("Stockinator.ai", avatar="🤖"):
             st.write("How can I help you?")
-        with st.chat_message(st.session_state.name, avatar="👤"):
+        with st.chat_message(st.session_state.stock_dict["name"], avatar="👤"):
             st.write(prompt)
         resp = r.post(
             "https://openrouter.ai/api/v1/chat/completions",
@@ -408,12 +414,12 @@ def chatbot():
 def portfolio_and_selling():
     st.header("Portfolio")
     st.divider()
-    if len(st.session_state.bought_stocks) != 0:
+    if len(st.session_state.stock_dict["Bought stocks"]) != 0:
         totInv = float(
             sum(
-                st.session_state.bought_stocks[a]["Price (1 share)"]
-                * st.session_state.bought_stocks[a]["No of shares bought"]
-                for a in st.session_state.bought_stocks
+                st.session_state.stock_dict["Bought stocks"][a]["Price (1 share)"]
+                * st.session_state.stock_dict["Bought stocks"][a]["No of shares bought"]
+                for a in st.session_state.stock_dict["Bought stocks"]
             )
         )
         totPL = sum(
@@ -421,7 +427,7 @@ def portfolio_and_selling():
             / 100
             * s["Price (1 share)"]
             * s["No of shares bought"]
-            for s in st.session_state.bought_stocks.values()
+            for s in st.session_state.stock_dict["Bought stocks"].values()
         )
         totRet = totPL / totInv * 100
         totPortVal = totInv + totPL
@@ -436,103 +442,103 @@ def portfolio_and_selling():
                 st.metric("Unrealised P/L", f"{totPL:.2f} INR", f"{totRet:.2f}%")
             with st.expander("Total Realised P/L"):
                 st.metric(
-                    "Total Realised P/L", f"{st.session_state.realisedPL:.2f} INR"
+                    "Total Realised P/L", f"{st.session_state.stock_dict["Realised PL"]:.2f} INR"
                 )
             with st.expander("Bank account balance"):
-                dTL = list(st.session_state.demat.keys())
+                dTL = list(st.session_state.stock_dict["Demat"].keys())
                 T = st.tabs(dTL)
                 for t in T:
                     for i in range(len(dTL)):
                         with t:
                             st.metric(f"Demat holding for {dTL[i]}")
             with st.expander("Demat account"):
-                st.json(st.session_state.demat)
+                st.json(st.session_state.stock_dict["Demat"])
         c1, c2 = st.columns(2, border=True, gap="large")
         with c1:
             st.subheader("Stock overview")
             st.divider()
             with st.container(border=True):
-                sList = list(st.session_state.bought_stocks.keys())
-                for i in st.session_state.bought_stocks:
+                sList = list(st.session_state.stock_dict["Bought stocks"].keys())
+                for i in st.session_state.stock_dict["Bought stocks"]:
                     with st.container(border=True):
                         st.subheader(sList[sList.index(i)])
                         bSDf = pd.DataFrame(
                             list(
-                                st.session_state.bought_stocks[i].items(),
+                                st.session_state.stock_dict["Bought stocks"][i].items(),
                             ),
                             columns=["Categories", "Details"],
                         )
                         st.dataframe(bSDf, hide_index=True)
             with st.container(border=True):
-                for i in st.session_state.bought_stocks:
+                for i in st.session_state.stock_dict["Bought stocks"]:
                     with st.container(border=True):
                         st.line_chart(
-                            st.session_state.bought_stocks[i]["6 month history"]
+                            st.session_state.stock_dict["Bought stocks"][i]["6 month history"]
                         )
         with c2:
             st.subheader("Selling")
             with st.container(border=True):
                 sellStock = st.selectbox(
                     "Choose a stock to sell",
-                    list(st.session_state.bought_stocks.keys()),
+                    list(st.session_state.stock_dict["Bought stocks"].keys()),
                 )
                 noS = st.number_input(
                     "How many shares do you want to sell?",
                     1,
-                    st.session_state.bought_stocks[sellStock]["No of shares bought"],
+                    st.session_state.stock_dict["Bought stocks"][sellStock]["No of shares bought"],
                 )
                 sellConf = st.button("Sell")
                 if sellConf:
                     if (
                         noS
-                        == st.session_state.bought_stocks[sellStock][
+                        == st.session_state.stock_dict["Bought stocks"][sellStock][
                             "No of shares bought"
                         ]
                     ):
-                        st.session_state.sold_stocks[sellStock] = (
-                            st.session_state.bought_stocks[sellStock]
+                        st.session_state.stock_dict["Sold stocks"][sellStock] = (
+                            st.session_state.stock_dict["Bought stocks"][sellStock]
                         )
                         del st.session_state_bought_stocks[sellStock]
-                        st.session_state.bankAcc["Balance"] += st.session_state.demat[
+                        st.session_state.stock_dict["Bank account"]["Balance"] += st.session_state.stock_dict["Demat"][
                             sellStock
                         ]
                         st.success(f"You sold {sellStock}!")
-                    if noS != st.session_state.bought_stocks[sellStock]["No of shares"]:
-                        st.session_state.bought_stocks["No of shares bought"] -= noS
-                        st.session_state.sold_stocks[sellStock] = (
-                            st.session_state.bought_stocks[sellStock]
+                    if noS != st.session_state.stock_dict["Bought stocks"][sellStock]["No of shares"]:
+                        st.session_state.stock_dict["Bought stocks"]["No of shares bought"] -= noS
+                        st.session_state.stock_dict["Sold stocks"][sellStock] = (
+                            st.session_state.stock_dict["Bought stocks"][sellStock]
                         )
-                        st.session_state.sold_stocks[sellStock][
+                        st.session_state.stock_dict["Sold stocks"][sellStock][
                             "No of shares bought"
                         ] = noS
-                        st.session_state.bankAcc += (
-                            st.session_state.bought_stocks[sellStock]["Price (1 share)"]
+                        st.session_state.stock_dict["Bank account"] += (
+                            st.session_state.stock_dict["Bought stocks"][sellStock]["Price (1 share)"]
                             * noS
                         ) * (
-                            st.session_state.bought_stocks[sellStock][
+                            st.session_state.stock_dict["Bought stocks"][sellStock][
                                 "Return Percentage 1 yr"
                             ]
                             / 100
                         ) + (
-                            st.session_state.bought_stocks[sellStock]["Price (1 share)"]
+                            st.session_state.stock_dict["Bought stocks"][sellStock]["Price (1 share)"]
                             * noS
                         )
-                        st.session_state.demat[sellStock] = 0
-                        st.session_state.demat[sellStock] = (
+                        st.session_state.stock_dict["Demat"][sellStock] = 0
+                        st.session_state.stock_dict["Demat"][sellStock] = (
                             (
-                                st.session_state.bought_stocks[sellStock][
+                                st.session_state.stock_dict["Bought stocks"][sellStock][
                                     "Price (1 share)"
                                 ]
                                 * noS
                             )
                             * (
-                                st.session_state.bought_stocks[sellStock][
+                                st.session_state.stock_dict["Bought stocks"][sellStock][
                                     "Return Percentage 1 yr"
                                 ]
                                 / 100
                             )
                             + (
-                                st.session_state.bought_stocks[sellStock][
+                                st.session_state.stock_dict["Bought stocks"][sellStock][
                                     "Price (1 share)"
                                 ]
                                 * noS

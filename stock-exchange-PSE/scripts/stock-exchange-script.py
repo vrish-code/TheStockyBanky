@@ -4,6 +4,7 @@ import streamlit as st
 import pandas as pd
 import requests as r
 import json
+import copy as c
 
 st.set_page_config(
     page_title="PSE Stock Simulator",
@@ -28,185 +29,165 @@ plt.rcParams.update(
     }
 )
 
+with open(r"C:\Users\karth\OneDrive\Desktop\apikey.json", "r", encoding="utf-8") as f:
+    apikeys = json.load(f)
+
 
 def save(data):
-    with open("C:\Users\karth\OneDrive\Desktop\apikey.json", "r", encoding="utf-8") as f:
-        apikeys=json.load(f)
-    
-    save_json=r.put(
+
+    save_json = r.put(
         "https://api.jsonstorage.net/v1/json/437555fb-6879-4dcc-b086-0b559e9e8e49/b7742efe-514a-4bb0-b2fb-caca14793ac6?",
         json=data,
-        headers={
-    "Content-Type": "application/json",
-    "apiKey": apikeys["api-key-json"]
-}
+        headers={"Content-Type": "application/json", "apiKey": apikeys["api-key-json"]},
     )
-def load(data):
-    get_json=r.get(
-        "https://api.jsonstorage.net/v1/json/437555fb-6879-4dcc-b086-0b559e9e8e49/b7742efe-514a-4bb0-b2fb-caca14793ac6"
-    ).json()
-    return get_json
 
+
+instructions = [
+    "Do not click on the same stock in buy or sell twice.",
+    "Do not misuse the chatbot.",
+    "Use this to learn the basics of trading.",
+    "All values are simulated, not real. No changes happen to a real bank account.",
+]
 
 if "stock_dict" not in st.session_state:
     st.session_state.stock_dict = {
-        "Stocks available": {
-            "RELIANCE": {
-                "Name": "Reliance Industries Limited",
-                "Price (1 share)": 21414.40 + random.randint(100, 100000),
-                "Return Percentage 1 yr": 13.30 - random.randint(-10, 10),
-                "6 month history": [
-                    20100.5,
-                    20550.2,
-                    20300.8,
-                    20900.4,
-                    21200.1,
-                    21414.4,
-                ],
-            },
-            "HDFCBANK": {
-                "Name": "HDFC Bank Limited",
-                "Price (1 share)": 20780.45 - random.randint(100, 100000),
-                "Return Percentage 1 yr": -11.75 + random.randint(-10, 10),
-                "6 month history": [
-                    22500.0,
-                    22100.4,
-                    21800.6,
-                    21200.3,
-                    20950.8,
-                    20780.45,
-                ],
-            },
-            "TCS": {
-                "Name": "Tata Consultancy Services Limited",
-                "Price (1 share)": 22390.60 + random.randint(100, 100000),
-                "Return Percentage 1 yr": 1.41 - random.randint(-10, 10),
-                "6 month history": [
-                    22100.2,
-                    22250.5,
-                    22050.1,
-                    22400.9,
-                    22300.4,
-                    22390.6,
-                ],
-            },
-            "ICICIBANK": {
-                "Name": "ICICI Bank Limited",
-                "Price (1 share)": 21245.40 - random.randint(100, 100000),
-                "Return Percentage 1 yr": 18.20 + random.randint(-10, 10),
-                "6 month history": [
-                    18500.4,
-                    19200.8,
-                    19850.2,
-                    20400.6,
-                    20900.1,
-                    21245.4,
-                ],
-            },
-            "INFY": {
-                "Name": "Infosys Limited",
-                "Price (1 share)": 21255.90 + random.randint(100, 100000),
-                "Return Percentage 1 yr": 5.40 - random.randint(-10, 10),
-                "6 month history": [
-                    20200.1,
-                    20500.4,
-                    20850.7,
-                    21000.3,
-                    21150.9,
-                    21255.9,
-                ],
-            },
-            "SBIN": {
-                "Name": "State Bank of India",
-                "Price (1 share)": 21058.00 - random.randint(100, 100000),
-                "Return Percentage 1 yr": 31.40 + random.randint(-10, 10),
-                "6 month history": [
-                    16500.5,
-                    17800.2,
-                    18900.8,
-                    19700.4,
-                    20500.1,
-                    21058.0,
-                ],
-            },
-            "BHARTIARTL": {
-                "Name": "Bharti Airtel Limited",
-                "Price (1 share)": 21846.10 + random.randint(100, 100000),
-                "Return Percentage 1 yr": 42.10 - random.randint(-10, 10),
-                "6 month history": [
-                    15800.2,
-                    17200.5,
-                    18500.1,
-                    19900.9,
-                    21000.4,
-                    21846.1,
-                ],
-            },
-        
-        },
         "Bought stocks": {},
         "Sold stocks": {},
         "Bank account": {"Balance": 100000000.676767 + random.randint(-10000, 100000)},
-        "Demat":{},
-        "realisedPL":0.00,
-        "Name": random.choice([
-        "Liam",
-        "Olivia",
-        "Noah",
-        "Emma",
-        "Oliver",
-        "Charlotte",
-        "James",
-        "Amelia",
-        "Elijah",
-        "Sophia",
-        "William",
-        "Isabella",
-        "Henry",
-        "Ava",
-        "Lucas",
-        "Mia",
-        "Benjamin",
-        "Evelyn",
-        "Theodore",
-        "Luna",
-        "Mateo",
-        "Harper",
-        "Levi",
-        "Sofia",
-        "Sebastian",
-        "Scarlett",
-        "Daniel",
-        "Elizabeth",
-        "Jack",
-        "Eleanor",
-        "Wyatt",
-        "Chloe",
-        "Alexander",
-        "Layla",
-        "Owen",
-        "Mila",
-        "Asher",
-        "Alice",
-        "Samuel",
-        "Hazel",
-        "Ethan",
-        "Claire",
-        "Leo",
-        "Ivy",
-        "Jackson",
-        "Aurora",
-        "Mason",
-        "Penelope",
-        "Ezra",
-        "Elena",
-    ])
+        "Demat": {},
+        "realisedPL": 0.00,
+        "Name": random.choice(
+            [
+                "Liam",
+                "Olivia",
+                "Noah",
+                "Emma",
+                "Oliver",
+                "Charlotte",
+                "James",
+                "Amelia",
+                "Elijah",
+                "Sophia",
+                "William",
+                "Isabella",
+                "Henry",
+                "Ava",
+                "Lucas",
+                "Mia",
+                "Benjamin",
+                "Evelyn",
+                "Theodore",
+                "Luna",
+                "Mateo",
+                "Harper",
+                "Levi",
+                "Sofia",
+                "Sebastian",
+                "Scarlett",
+                "Daniel",
+                "Elizabeth",
+                "Jack",
+                "Eleanor",
+                "Wyatt",
+                "Chloe",
+                "Alexander",
+                "Layla",
+                "Owen",
+                "Mila",
+                "Asher",
+                "Alice",
+                "Samuel",
+                "Hazel",
+                "Ethan",
+                "Claire",
+                "Leo",
+                "Ivy",
+                "Jackson",
+                "Aurora",
+                "Mason",
+                "Penelope",
+                "Ezra",
+                "Elena",
+            ]
+        ),
     }
+save(st.session_state.stock_dict)
+if "availableStocks" not in st.session_state:
+    st.session_state.availableStocks = {
+        "RELIANCE": {
+            "Name": "Reliance Industries Limited",
+            "Price (1 share)": 2985.40 + random.randint(100, 100000),
+            "Return Percentage 1 yr": 18.50 - random.randint(-10, 10),
+            "6 month history": [2450.5, 2580.2, 2710.8, 2840.4, 2920.1, 2985.4],
+        },
+        "HDFCBANK": {
+            "Name": "HDFC Bank Limited",
+            "Price (1 share)": 1642.15 - random.randint(100, 100000),
+            "Return Percentage 1 yr": 4.25 + random.randint(-10, 10),
+            "6 month history": [1520.0, 1480.4, 1550.6, 1610.3, 1630.8, 1642.15],
+        },
+        "TCS": {
+            "Name": "Tata Consultancy Services Limited",
+            "Price (1 share)": 3950.60 + random.randint(100, 100000),
+            "Return Percentage 1 yr": 15.41 - random.randint(-10, 10),
+            "6 month history": [3410.2, 3550.5, 3680.1, 3820.9, 3910.4, 3950.6],
+        },
+        "ICICIBANK": {
+            "Name": "ICICI Bank Limited",
+            "Price (1 share)": 1125.40 - random.randint(100, 100000),
+            "Return Percentage 1 yr": 22.20 + random.randint(-10, 10),
+            "6 month history": [950.4, 990.8, 1040.2, 1080.6, 1110.1, 1125.4],
+        },
+        "INFY": {
+            "Name": "Infosys Limited",
+            "Price (1 share)": 1545.90 + random.randint(100, 100000),
+            "Return Percentage 1 yr": 12.40 - random.randint(-10, 10),
+            "6 month history": [1380.1, 1420.4, 1460.7, 1490.3, 1520.9, 1545.9],
+        },
+        "BHARTIARTL": {
+            "Name": "Bharti Airtel Limited",
+            "Price (1 share)": 1420.10 + random.randint(100, 100000),
+            "Return Percentage 1 yr": 65.10 - random.randint(-10, 10),
+            "6 month history": [880.2, 950.5, 1100.1, 1250.9, 1380.4, 1420.1],
+        },
+        "SBIN": {
+            "Name": "State Bank of India",
+            "Price (1 share)": 785.00 - random.randint(100, 100000),
+            "Return Percentage 1 yr": 35.40 + random.randint(-10, 10),
+            "6 month history": [580.5, 620.2, 680.8, 720.4, 760.1, 785.0],
+        },
+        "LICI": {
+            "Name": "Life Insurance Corporation of India",
+            "Price (1 share)": 1015.45 + random.randint(100, 100000),
+            "Return Percentage 1 yr": 72.86 - random.randint(-10, 10),
+            "6 month history": [610.1, 680.4, 820.1, 940.5, 990.3, 1015.45],
+        },
+        "ITC": {
+            "Name": "ITC Limited",
+            "Price (1 share)": 435.65 + random.randint(100, 100000),
+            "Return Percentage 1 yr": 5.77 - random.randint(-10, 10),
+            "6 month history": [410.8, 425.4, 440.1, 455.6, 442.2, 435.65],
+        },
+        "LTIM": {
+            "Name": "LTIMindtree Limited",
+            "Price (1 share)": 4850.00 + random.randint(100, 100000),
+            "Return Percentage 1 yr": -2.30 - random.randint(-10, 10),
+            "6 month history": [5200.4, 5100.1, 4950.5, 4880.2, 4820.4, 4850.0],
+        },
+    }
+
+if "stock_df" not in st.session_state:
+    st.session_state.stock_df = (
+        pd.DataFrame.from_dict(st.session_state.availableStocks, orient="index")
+        .reset_index()
+        .rename(columns={"index": "Ticker"})
+    )
+
 
 def buying_and_stats():
     st.title("View stocks!")
-    tl = list(st.session_state.stock_dict.keys())
-    pl = list(x["Price (1 share)"] for x in st.session_state.stock_dict.values())
+    tl = list(st.session_state.availableStocks.keys())
+    pl = list(x["Price (1 share)"] for x in st.session_state.availableStocks.values())
 
     with st.container(border=True):
 
@@ -244,15 +225,15 @@ def buying_and_stats():
 
             retpr = [
                 float(x["Return Percentage 1 yr"])
-                for x in st.session_state.stock_dict.values()
+                for x in st.session_state.availableStocks.values()
             ]
             retPerSort = list(sorted(retpr, reverse=True))
 
             g, h = plt.subplots()
             h.barh(
                 sorted(
-                    list(st.session_state.stock_dict.keys()),
-                    key=lambda k: st.session_state.stock_dict[k][
+                    list(st.session_state.availableStocks.keys()),
+                    key=lambda k: st.session_state.availableStocks[k][
                         "Return Percentage 1 yr"
                     ],
                     reverse=True,
@@ -292,10 +273,12 @@ def buying_and_stats():
                 )
 
             if s:
-                st.session_state.stock_dict["Bought stocks"][buyStock] = st.session_state.stock_dict[
-                    buyStock
-                ].copy()
-                st.session_state.stock_dict["Bought stocks"][buyStock]["No of shares bought"] = noS
+                st.session_state.stock_dict["Bought stocks"][buyStock] = c.deepcopy(
+                    st.session_state.availableStocks[buyStock]
+                )
+                st.session_state.stock_dict["Bought stocks"][buyStock][
+                    "No of shares bought"
+                ] = noS
                 st.session_state.stock_dict["Demat"][buyStock] = 0
                 st.session_state.stock_dict["Demat"][buyStock] += (
                     st.session_state.stock_dict[buyStock]["Price (1 share)"] * noS
@@ -306,49 +289,13 @@ def buying_and_stats():
                     st.session_state.stock_dict[buyStock]["Price (1 share)"] * noS
                 )
                 st.session_state.stock_dict["Bank account"]["Balance"] -= (
-                    st.session_state.stock_dict[buyStock]["Price (1 share)"]
-                    * st.session_state.stock_dict["Bought stocks"][buyStock]["No of shares bought"]
+                    st.session_state.availableStocks[buyStock]["Price (1 share)"]
+                    * st.session_state.stock_dict["Bought stocks"][buyStock][
+                        "No of shares bought"
+                    ]
                 )
+                save(st.session_state.stock_dict)
                 st.success(f"You bought {buyStock}!")
-
-    with st.container(border=True):
-        t1, t2, t3, t4, t5, t6, t7 = st.tabs(tl)
-
-        with t1:
-            st.line_chart(
-                st.session_state.stock_dict[tl[0]].get("6 month history"),
-                color="#3CB371",
-            )
-        with t2:
-            st.line_chart(
-                st.session_state.stock_dict[tl[1]].get("6 month history"),
-                color="#3CB371",
-            )
-        with t3:
-            st.line_chart(
-                st.session_state.stock_dict[tl[2]].get("6 month history"),
-                color="#3CB371",
-            )
-        with t4:
-            st.line_chart(
-                st.session_state.stock_dict[tl[3]].get("6 month history"),
-                color="#3CB371",
-            )
-        with t5:
-            st.line_chart(
-                st.session_state.stock_dict[tl[4]].get("6 month history"),
-                color="#3CB371",
-            )
-        with t6:
-            st.line_chart(
-                st.session_state.stock_dict[tl[5]].get("6 month history"),
-                color="#3CB371",
-            )
-        with t7:
-            st.line_chart(
-                st.session_state.stock_dict[tl[6]].get("6 month history"),
-                color="#3CB371",
-            )
 
 
 def return_calc():
@@ -359,14 +306,14 @@ def return_calc():
 
         stock_choice = st.selectbox(
             "Choose a stock",
-            list(st.session_state.stock_dict.keys()),
+            list(st.session_state.availableStocks.keys()),
         )
         st.divider()
 
         noShares = st.number_input(
             "Choose the number of shares you want to buy",
             1,
-            1000,
+            None,
             1,
         )
         st.divider()
@@ -385,13 +332,9 @@ def return_calc():
 
 
 def chatbot():
-    with open(
-        r"C:\Users\karth\OneDrive\Desktop\apikey.json", "r", encoding="utf-8"
-    ) as f:
-        API_KEY = json.load(f)["api-key"]
     with st.container(border=True):
         prompt = st.chat_input("Enter a prompt")
-    realPrompt = f"Stock dict:{st.session_state.stock_dict}, Bought stocks: {st.session_state.stock_dict["Bought stocks"]}, Sold stocks: {st.session_state.stock_dict["Sold stocks"]}, bank account: {st.session_state.stock_dict["Bank account"]}, demat account: {st.session_state.stock_dict["Demat"]}, {prompt}"
+    realPrompt = f"Stocks available:{st.session_state.availableStocks}, Bought stocks: {st.session_state.stock_dict["Bought stocks"]}, Sold stocks: {st.session_state.stock_dict["Sold stocks"]}, bank account: {st.session_state.stock_dict["Bank account"]}, demat account: {st.session_state.stock_dict["Demat"]}, {prompt}"
     with st.container(border=True):
         with st.chat_message("Stockinator.ai", avatar="🤖"):
             st.write("How can I help you?")
@@ -400,7 +343,7 @@ def chatbot():
         resp = r.post(
             "https://openrouter.ai/api/v1/chat/completions",
             headers={
-                "Authorization": f"Bearer {API_KEY}",
+                "Authorization": f"Bearer {apikeys["api-key-chatbot"]}",
                 "Content-Type": "application/json",
             },
             json={
@@ -443,7 +386,8 @@ def portfolio_and_selling():
                 st.metric("Unrealised P/L", f"{totPL:.2f} INR", f"{totRet:.2f}%")
             with st.expander("Total Realised P/L"):
                 st.metric(
-                    "Total Realised P/L", f"{st.session_state.stock_dict["Realised PL"]:.2f} INR"
+                    "Total Realised P/L",
+                    f"{st.session_state.stock_dict["Realised PL"]:.2f} INR",
                 )
             with st.expander("Bank account balance"):
                 dTL = list(st.session_state.stock_dict["Demat"].keys())
@@ -474,7 +418,9 @@ def portfolio_and_selling():
                 for i in st.session_state.stock_dict["Bought stocks"]:
                     with st.container(border=True):
                         st.line_chart(
-                            st.session_state.stock_dict["Bought stocks"][i]["6 month history"]
+                            st.session_state.stock_dict["Bought stocks"][i][
+                                "6 month history"
+                            ]
                         )
         with c2:
             st.subheader("Selling")
@@ -486,7 +432,9 @@ def portfolio_and_selling():
                 noS = st.number_input(
                     "How many shares do you want to sell?",
                     1,
-                    st.session_state.stock_dict["Bought stocks"][sellStock]["No of shares bought"],
+                    st.session_state.stock_dict["Bought stocks"][sellStock][
+                        "No of shares bought"
+                    ],
                 )
                 sellConf = st.button("Sell")
                 if sellConf:
@@ -500,12 +448,19 @@ def portfolio_and_selling():
                             st.session_state.stock_dict["Bought stocks"][sellStock]
                         )
                         del st.session_state_bought_stocks[sellStock]
-                        st.session_state.stock_dict["Bank account"]["Balance"] += st.session_state.stock_dict["Demat"][
-                            sellStock
-                        ]
+                        st.session_state.stock_dict["Bank account"][
+                            "Balance"
+                        ] += st.session_state.stock_dict["Demat"][sellStock]
                         st.success(f"You sold {sellStock}!")
-                    if noS != st.session_state.stock_dict["Bought stocks"][sellStock]["No of shares"]:
-                        st.session_state.stock_dict["Bought stocks"]["No of shares bought"] -= noS
+                    if (
+                        noS
+                        != st.session_state.stock_dict["Bought stocks"][sellStock][
+                            "No of shares"
+                        ]
+                    ):
+                        st.session_state.stock_dict["Bought stocks"][
+                            "No of shares bought"
+                        ] -= noS
                         st.session_state.stock_dict["Sold stocks"][sellStock] = (
                             st.session_state.stock_dict["Bought stocks"][sellStock]
                         )
@@ -513,7 +468,9 @@ def portfolio_and_selling():
                             "No of shares bought"
                         ] = noS
                         st.session_state.stock_dict["Bank account"] += (
-                            st.session_state.stock_dict["Bought stocks"][sellStock]["Price (1 share)"]
+                            st.session_state.stock_dict["Bought stocks"][sellStock][
+                                "Price (1 share)"
+                            ]
                             * noS
                         ) * (
                             st.session_state.stock_dict["Bought stocks"][sellStock][
@@ -521,7 +478,9 @@ def portfolio_and_selling():
                             ]
                             / 100
                         ) + (
-                            st.session_state.stock_dict["Bought stocks"][sellStock]["Price (1 share)"]
+                            st.session_state.stock_dict["Bought stocks"][sellStock][
+                                "Price (1 share)"
+                            ]
                             * noS
                         )
                         st.session_state.stock_dict["Demat"][sellStock] = 0
@@ -546,9 +505,19 @@ def portfolio_and_selling():
                             )
                             - noS
                         )
+                        save(st.session_state.stock_dict)
 
     else:
         st.error("No stocks bought!")
+
+
+def instructions():
+    for i in range(len(instructions)):
+        st.warning(instructions[i])
+        st.divider()
+    st.caption(
+        "This game is purely made for educational purposes. No misuse cases are attributed to the developer."
+    )
 
 
 with st.sidebar:

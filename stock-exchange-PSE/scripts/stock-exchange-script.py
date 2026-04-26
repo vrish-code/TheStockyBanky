@@ -548,7 +548,7 @@ def inStructions():
     for i in range(len(instructions)):
         st.warning(instructions[i])
         st.divider()
-    st.sucess("Happy trading!")
+    st.success("Happy trading!")
     st.divider()
     st.caption(
         "This game is purely made for educational purposes. No misuse cases are attributed to the developer."

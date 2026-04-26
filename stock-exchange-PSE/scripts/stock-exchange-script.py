@@ -38,6 +38,10 @@ instructions = [
     "Do not misuse the chatbot.",
     "Use this to learn the basics of trading.",
     "All values are simulated, not real. No changes happen to a real bank account.",
+    "Navigate between pages using the sidebar's dropdown menu",
+    "Read the graphs and data carefully and buy or sell your stocks.",
+    "Use the dropdowns for selecting stocks.",
+    "Use the expanders for viewing your portfolio data at a glance.",
 ]
 
 if "userDict" not in st.session_state:
@@ -299,7 +303,7 @@ def buying_and_stats():
 
 
 def returnCalc():
-    st.title("Calculate your returns—on point!")
+    st.title("Calculate your returns—on point! Decide wisely.")
     with st.container(border=True):
         st.subheader("Return calculator")
         st.divider()
@@ -341,7 +345,7 @@ def chatbot():
     Bought stocks: {st.session_state.userDict["Bought stocks"]}, 
     Sold stocks: {st.session_state.userDict["Sold stocks"]}, 
     Bank account: {st.session_state.userDict["Bank account"]}, 
-    Demat account: {st.session_state.userDict["Demat"]}, {prompt}"""
+    Demat account: {st.session_state.userDict["Demat"]}, {prompt}, do not provide any inappropriate misinformation."""
     with st.container(border=True):
         with st.chat_message("Stockinator.ai", avatar="🤖"):
             st.write("How can I help you?")
@@ -360,7 +364,7 @@ def chatbot():
                 },
             )
             if resp.status_code == 200:
-                with st.chat_message("Stockinator.ai"):
+                with st.chat_message("Stockinator.ai", avatar="🤖"):
                     st.write(f"{resp.json()['choices'][0]['message']['content']}")
 
 
@@ -547,21 +551,33 @@ def inStructions():
     for i in range(len(instructions)):
         st.warning(instructions[i])
         st.divider()
+    st.sucess("Happy trading!")
+    st.divider()
     st.caption(
         "This game is purely made for educational purposes. No misuse cases are attributed to the developer."
     )
 
 
 with st.sidebar:
-    st.sidebar.title("Choose")
-    a = st.selectbox("Choice", [1, 2, 3, 4, 5])
-if a == 1:
+    choiceList = [
+        "View stock stats and buy some stocks",
+        "Calculate the return percentage of stocks",
+        "View your portfolio and sell stocks",
+        "Use the chatbot",
+        "Read the instruction manual",
+    ]
+    st.sidebar.title("Navigate between pages using the sidebar's dropdown menu")
+    a = st.selectbox(
+        "Choice",
+        choiceList,
+    )
+if a == choiceList[0]:
     buying_and_stats()
-if a == 2:
+if a == choiceList[2]:
     portfolio_and_selling()
-if a == 3:
+if a == choiceList[3]:
     chatbot()
-if a == 4:
+if a == choiceList[1]:
     returnCalc()
-if a == 5:
+if a == choiceList[4]:
     inStructions()

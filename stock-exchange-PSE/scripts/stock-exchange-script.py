@@ -573,6 +573,7 @@ def inStructions():
     )
 
 
+gender_selection()
 with st.sidebar:
     choiceList = [
         "View stock stats and buy some stocks",

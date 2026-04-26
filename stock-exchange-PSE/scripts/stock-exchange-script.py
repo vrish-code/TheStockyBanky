@@ -123,6 +123,7 @@ if "stock_df" not in st.session_state:
 
 
 def gender_selection():
+    st.empty()
     gendSelect = st.segmented_control("Choose a gender", ["Boy", "Girl"], required=True)
     st.session_state.gender = gendSelect
     if gendSelect == "Boy":
@@ -187,8 +188,8 @@ def gender_selection():
             ]
         )
     else:
-        del st.session_state.gender
-        del st.session_state.userDict["Name"]
+        st.session_state.gender = None
+        st.session_state.userDict["Name"] = None
 
 
 def buying_and_stats():

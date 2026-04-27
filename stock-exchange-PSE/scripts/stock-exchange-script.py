@@ -131,6 +131,7 @@ def selectNameAge():
         )
     st.session_state.userDict["Age"] = age
     st.session_state.userDict["Name"] = name
+    st.success("Name and age updated!")
 
 
 def buyingAndStats():

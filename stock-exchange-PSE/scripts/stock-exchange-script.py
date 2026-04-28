@@ -309,7 +309,7 @@ def buyingAndStats():
     for i, j in zip(st.tabs(tickerList), tickerList):
         with i:
             st.write(j)
-            st.divider
+            st.divider()
             st.line_chart(
                 pd.DataFrame(st.session_state.availableStocks[j]["6 month history"]),
                 color="#17807e",

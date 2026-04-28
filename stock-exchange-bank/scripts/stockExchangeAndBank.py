@@ -4,7 +4,7 @@ import streamlit as st
 import pandas as pd
 import requests as r
 import copy as c
-import bankingProgram as b
+import time as t
 
 st.set_page_config(
     page_title="StockyBankySimulator",
@@ -49,6 +49,13 @@ if "userDict" not in st.session_state:
         "Bank account": {
             "Balance": 100000000.676767 + random.randint(100, 1000000000000000)
         },
+        "No of withdrawals": 0,
+        "No of deposits": 0,
+        "Total amount withdrawn": 0,
+        "Total amount deposited": 0,
+        "Withdrawals": [],
+        "Deposits": [],
+        "PIN": 9632,
         "Demat": {},
         "Name": (
             random.choice(
@@ -872,9 +879,50 @@ def inStructions():
         st.divider()
     st.success("Happy trading!")
     st.divider()
+    ph = st.empty()
+    with ph:
+        with st.container(border=True):
+            st.write(f"Your PIN is {st.session_state.userDict["PIN"]}")
+            t.sleep(5)
+        ph.empty()
     st.caption(
         "This game is purely made for educational purposes. No misuse cases are attributed to the developer."
     )
+
+
+def bankManagement():
+    class withDraw:
+        def __init__(self, name, amount, withdrawalNo):
+            self.name = name
+            self.amount = amount
+            self.withdrawalNo = withdrawalNo
+
+        def __dict__(self):
+            return {
+                "Name": self.name,
+                "Amount": self.amount,
+                "Withdrawal number": self.withdrawalNo,
+            }
+
+        def celebrate():
+            st.success("Withdrawal successful!")
+
+    c1, c2 = st.columns(2, border=True)
+    with c1:
+        st.subheader("Withdrawals here!")
+        st.divider()
+        with st.container(border=True):
+            withdrawalName = st.text_input("Enter the name of your withdrawal")
+            pin = int(st.text_input("Enter your PIN", type="password"))
+            amountWithdrawn = st.slider(
+                label="How much do you want to withdraw",
+                min=100,
+                max=st.session_state.userDict["Bank account balance"],
+                step=1,
+            )
+        if withdrawalName and pin and amountWithdrawn:
+            if pin == st.session_state.userDict["PIN"]:
+                withdrawal = None
 
 
 with st.sidebar:
@@ -884,6 +932,7 @@ with st.sidebar:
         "View your portfolio and sell stocks",
         "Use the chatbot",
         "Read the instruction manual",
+        "Manage your bank account",
     ]
     st.sidebar.title("Navigate between pages using the sidebar's dropdown menu")
     a = st.selectbox(
@@ -900,3 +949,5 @@ if a == choiceList[1]:
     returnCalc()
 if a == choiceList[4]:
     inStructions()
+if a == choiceList[5]:
+    pass

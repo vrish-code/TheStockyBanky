@@ -308,10 +308,10 @@ def buyingAndStats():
     tickerList = list(st.session_state.availableStocks.keys())
     for i, j in zip(st.tabs(tickerList), tickerList):
         with i:
+            st.write(j)
+            st.divider
             st.line_chart(
-                st.session_state.availableStocks[j]["6 month history"],
-                x=j,
-                y="6 month price history",
+                pd.DataFrame(st.session_state.availableStocks[j]["6 month history"]),
                 color="#17807e",
             )
 

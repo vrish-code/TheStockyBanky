@@ -308,15 +308,16 @@ def buyingAndStats():
     tickerList = list(st.session_state.availableStocks.keys())
     with st.container(border=True):
         tabs = st.tabs(tickerList)
-        for i, t in enumerate(tabs):
-            for i in st.session_state.availableStocks:
-                with t:
-                    st.line_chart(
-                        st.session_state.availableStocks[i]["6 month history"],
-                        x=f"{tickerList[i]} Price Trend",
-                        y="Amount (INR)",
-                        color="#0ffff6",
-                    )
+        for i in tabs:
+            for j in range(len(tickerList)):
+                for k in st.session_state.availableStocks:
+                    with i:
+                        st.line_chart(
+                            st.session_state.availableStocks[k]["6 month history"],
+                            x=f"{tickerList[j]}",
+                            y="Price Trend (6 months)",
+                            color="#176d74",
+                        )
 
 
 def returnCalc():

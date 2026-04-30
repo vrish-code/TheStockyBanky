@@ -948,14 +948,14 @@ def bankManagement():
             self.amount = amount
             self.withdrawalNo = withdrawalNo
 
-        def __dict__(self):
+        def dict(self):
             return {
                 "Name": self.name,
                 "Amount": self.amount,
                 "Withdrawal number": self.withdrawalNo,
             }
 
-        def celebrate():
+        def celebrate(self):
             st.success("Withdrawal successful!")
 
     class deposit:
@@ -964,14 +964,14 @@ def bankManagement():
             self.amount = amount
             self.withdrawalNo = depositNo
 
-        def __dict__(self):
+        def dict(self):
             return {
                 "Name": self.name,
                 "Amount": self.amount,
                 "Deposit number": self.depositNo,
             }
 
-        def celebrate():
+        def celebrate(self):
             st.success("Deposit successful!")
 
     class transaction:
@@ -981,7 +981,7 @@ def bankManagement():
             self.withdrawalNo = transactionNo
             self.receiver = receiver
 
-        def __dict__(self):
+        def dict(self):
             return {
                 "Name": self.name,
                 "Amount": self.amount,
@@ -989,7 +989,7 @@ def bankManagement():
                 "Receiver": self.receiver,
             }
 
-        def celebrate():
+        def celebrate(self):
             st.success("Transaction successful!")
 
     c1, c2, c3 = st.columns(3, border=True)
@@ -1010,7 +1010,7 @@ def bankManagement():
                 withdrawal = withDraw(
                     withdrawalName, amountWithdrawn, random.randint(1000, 1000000000)
                 )
-                st.session_state.userDict["Withdrawals"].append(withdrawal)
+                st.session_state.userDict["Withdrawals"].append()
                 withdrawal.celebrate()
             else:
                 st.error("Enter a new PIN. The submitted PIN is wrong.")

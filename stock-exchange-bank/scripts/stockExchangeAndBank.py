@@ -709,8 +709,8 @@ def bankManagement():
             pin = st.text_input("Enter your PIN", type="password")
             amountWithdrawn = st.slider(
                 label="How much do you want to withdraw",
-                min=1.00,
-                max=st.session_state.userDict["Bank account"]["Balance"],
+                min_value=1.00,
+                max_value=st.session_state.userDict["Bank account"]["Balance"],
                 step=1,
             )
         if withdrawalName and pin and amountWithdrawn:
@@ -735,8 +735,8 @@ def bankManagement():
             pinTra = st.text_input("Enter your PIN", type="password")
             amountSent = st.slider(
                 label="How much do you want to send",
-                min=1.00,
-                max=st.session_state.userDict["Bank account"]["Balance"],
+                min_value=1.00,
+                max_value=st.session_state.userDict["Bank account"]["Balance"],
                 step=1,
             )
             receiver = st.selectbox("Who do you want to send the money to?", names)

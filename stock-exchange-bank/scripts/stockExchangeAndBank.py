@@ -58,7 +58,7 @@ if "userDict" not in st.session_state:
         "Total withdrawn": 0,
         "Total deposited": 0,
         "Total sent": 0,
-        "PIN": 106578,
+        "PIN": "106578",
         "Demat": {},
         "Name": (
             random.choice(
@@ -701,7 +701,7 @@ def bankManagement():
         st.divider()
         with st.container(border=True):
             withdrawalName = st.text_input("Enter the name of your withdrawal")
-            pin = int(st.text_input("Enter your PIN", type="password"))
+            pin = st.text_input("Enter your PIN", type="password")
             amountWithdrawn = st.slider(
                 label="How much do you want to withdraw",
                 min=1.00,
@@ -725,7 +725,7 @@ def bankManagement():
         st.divider()
         with st.container(border=True):
             transactionName = st.text_input("Enter the name of your withdrawal")
-            pinTra = int(st.text_input("Enter your PIN", type="password"))
+            pinTra = st.text_input("Enter your PIN", type="password")
             amountSent = st.slider(
                 label="How much do you want to send",
                 min=1.00,
@@ -753,7 +753,7 @@ def bankManagement():
         st.divider()
         with st.container(border=True):
             depositName = st.text_input("Enter the name of your deposit")
-            pinDep = int(st.text_input("Enter your PIN", type="password"))
+            pinDep = st.text_input("Enter your PIN", type="password")
             amountDeposited = st.slider(
                 label="How much do you want to deposit",
                 min=1.00,

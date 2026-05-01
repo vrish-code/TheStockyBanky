@@ -863,4 +863,4 @@ if a == choiceList[1]:
 if a == choiceList[4]:
     inStructions()
 if a == choiceList[5]:
-    pass
+    bankManagement()

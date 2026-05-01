@@ -705,8 +705,10 @@ def bankManagement():
         st.subheader("Withdrawals here!")
         st.divider()
         with st.container(border=True):
-            withdrawalName = st.text_input("Enter the name of your withdrawal")
-            pin = st.text_input("Enter your PIN", type="password")
+            withdrawalName = st.text_input(
+                "Enter the name of your withdrawal", key="withDraw"
+            )
+            pin = st.text_input("Enter your PIN", key="pIn", type="password")
             amountWithdrawn = st.number_input(
                 label="How much do you want to withdraw",
                 min_value=1.00,
@@ -731,8 +733,10 @@ def bankManagement():
         st.subheader("Transactions here!")
         st.divider()
         with st.container(border=True):
-            transactionName = st.text_input("Enter the name of your withdrawal")
-            pinTra = st.text_input("Enter your PIN", type="password")
+            transactionName = st.text_input(
+                "Enter the name of your transaction", key="transaction"
+            )
+            pinTra = st.text_input("Enter your PIN", key="PIN", type="password")
             amountSent = st.number_input(
                 label="How much do you want to send",
                 min_value=1.00,
@@ -761,8 +765,8 @@ def bankManagement():
         st.subheader("Deposits here!")
         st.divider()
         with st.container(border=True):
-            depositName = st.text_input("Enter the name of your deposit")
-            pinDep = st.text_input("Enter your PIN", type="password")
+            depositName = st.text_input("Enter the name of your deposit", key="deposit")
+            pinDep = st.text_input("Enter your PIN", key="pin", type="password")
             amountDeposited = st.number_input(
                 label="How much do you want to deposit",
                 min_value=1.00,

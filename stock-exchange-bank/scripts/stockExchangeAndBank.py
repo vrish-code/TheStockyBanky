@@ -928,7 +928,6 @@ with st.sidebar:
             elif now.hour >= 20:
                 st.badge("Good night!", icon="🌕", color="blue")
             st.metric(f"Current time", now.strftime("%I:%M %p"), delta=selectedTimeZone)
-            t.sleep(60)
             st.metric("Current date", now.strftime("%B, %d, %Y"))
     choice = st.selectbox(
         "Choice",

@@ -128,7 +128,7 @@ if "availableStocks" not in st.session_state:
     months = pd.Categorical(
         monthsUnordered,
         categories=monthsUnordered,
-        order=True,
+        ordered=True,
     )
     st.session_state.availableStocks = {
         "RELIANCE": {

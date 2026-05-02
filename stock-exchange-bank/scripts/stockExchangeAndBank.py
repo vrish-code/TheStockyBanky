@@ -748,13 +748,15 @@ def bankManagement():
             transactionConf = st.button("Confirm transaction")
             if transactionConf:
                 if pinTra == st.session_state.userDict["PIN"]:
-                    withdrawal = transaction(
-                        withdrawalName,
-                        amountWithdrawn,
+                    transactionDictSingle = transaction(
+                        transactionName,
+                        amountSent,
                         random.randint(1000, 1000000000),
                         receiver,
                     )
-                    st.session_state.userDict["Transactions"].append(transaction.dict())
+                    st.session_state.userDict["Transactions"].append(
+                        transactionDictSingle.dict()
+                    )
                     st.session_state.userDict["Bank account"]["Balance"] -= amountSent
                     st.session_state.userDict["Total sent"] += amountSent
                     st.session_state.userDict["No of transactions"] += 1

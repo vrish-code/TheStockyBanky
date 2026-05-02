@@ -5,6 +5,8 @@ import pandas as pd
 import requests as r
 import copy as c
 import time as t
+from datetime import datetime
+from zoneinfo import ZoneInfo, available_timezones
 
 st.set_page_config(
     page_title="StockyBankySimulator",
@@ -896,6 +898,7 @@ def bankManagement():
 
 
 with st.sidebar:
+    ph = st.empty()
     choiceList = [
         "View stock stats and buy some stocks",
         "Calculate the return percentage of stocks",
@@ -905,19 +908,44 @@ with st.sidebar:
         "Manage your bank account",
     ]
     st.sidebar.title("Navigate between pages using the sidebar's dropdown menu")
-    a = st.selectbox(
+    with ph.container(border=True):
+        timeZones = sorted(
+            [
+                tz
+                for tz in available_timezones()
+                if "/" in tz and not tz.startswith("Etc/")
+            ]
+        )
+        selectedTimeZone = st.selectbox("Select your timezone", timeZones)
+        if selectedTimeZone:
+            while True:
+                now = datetime.strftime(ZoneInfo(selectedTimeZone))
+                if now.hour < 12:
+                    st.badge("Good morning", icon="☀️", color="yellow")
+                elif now.hour == 12:
+                    st.badge("Good afternoon!", icon="🔥", color="red")
+                elif now.hour > 12 and now.hour < 20:
+                    st.badge("Good evening", icon="🌅", color="yellow")
+                elif now.hour >= 20:
+                    st.badge("Good night!", icon="🌕", color="blue")
+                st.metric(
+                    f"Current time", now.strftime("%I:%M %p"), delta=selectedTimeZone
+                )
+                t.sleep(1)
+                st.metric("Current date", now.strftime("%A, %B, %d, %Y"))
+    choice = st.selectbox(
         "Choice",
         choiceList,
     )
-if a == choiceList[0]:
+if choice == choiceList[0]:
     buyingAndStats()
-if a == choiceList[2]:
+if choice == choiceList[2]:
     portfolioAndSelling()
-if a == choiceList[3]:
+if choice == choiceList[3]:
     chatbot()
-if a == choiceList[1]:
+if choice == choiceList[1]:
     returnCalc()
-if a == choiceList[4]:
+if choice == choiceList[4]:
     inStructions()
-if a == choiceList[5]:
+if choice == choiceList[5]:
     bankManagement()

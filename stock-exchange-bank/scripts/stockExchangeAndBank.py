@@ -909,16 +909,19 @@ with st.sidebar:
     ]
     st.sidebar.title("Navigate between pages using the sidebar's dropdown menu")
     with ph.container(border=True):
-        timeZones = sorted(
-            [
-                tz
-                for tz in available_timezones()
-                if "/" in tz and not tz.startswith("Etc/")
-            ]
-        )
-        selectedTimeZone = st.selectbox("Select your timezone", timeZones)
-        if selectedTimeZone:
-            now = datetime.now(ZoneInfo(selectedTimeZone))
+
+        @st.fragment(run_every=1)
+        def displayClock():
+            timeZones = sorted(
+                [
+                    tz
+                    for tz in available_timezones()
+                    if "/" in tz and not tz.startswith("Etc/")
+                ]
+            )
+            selectedTimeZone = st.selectbox("Select your timezone", timeZones)
+            if selectedTimeZone:
+                now = datetime.now(ZoneInfo(selectedTimeZone))
             if now.hour < 12:
                 st.badge("Good morning", icon="☀️", color="yellow")
             elif now.hour == 12:
@@ -927,8 +930,14 @@ with st.sidebar:
                 st.badge("Good evening", icon="🌅", color="yellow")
             elif now.hour >= 20:
                 st.badge("Good night!", icon="🌕", color="blue")
-            st.metric(f"Current time", now.strftime("%I:%M %p"), delta=selectedTimeZone)
+            st.metric(
+                f"Current time",
+                now.strftime("%I:%M %p"),
+                delta=selectedTimeZone,
+                delta_color="off",
+            )
             st.metric("Current date", now.strftime("%B, %d, %Y"))
+
     choice = st.selectbox(
         "Choice",
         choiceList,

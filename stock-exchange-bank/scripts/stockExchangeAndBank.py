@@ -443,7 +443,7 @@ def portfolioAndSelling():
                     )
                     st.divider()
 
-        t1, t2 = st.tabs(['Stock overview", "Selling'])
+        t1, t2 = st.tabs(["Stock overview", "Selling"])
         with t1:
             with st.container(border=True):
                 st.subheader("Stock overview")

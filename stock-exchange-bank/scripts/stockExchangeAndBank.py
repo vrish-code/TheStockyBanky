@@ -594,7 +594,7 @@ def inStructions():
 
 
 def bankManagement():
-
+    st.title(f"Welcome, {st.session_state.userDict["Name"]}")
     names = [
         "Liam",
         "Noah",
@@ -647,6 +647,7 @@ def bankManagement():
         "Penelope",
         "Elena",
     ]
+    names.remove(st.session_state.userDict["Name"])
 
     class withDraw:
         def __init__(self, name: str, amount: float, withdrawalNo: int):

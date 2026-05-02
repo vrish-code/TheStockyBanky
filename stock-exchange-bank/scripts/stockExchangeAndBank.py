@@ -918,21 +918,18 @@ with st.sidebar:
         )
         selectedTimeZone = st.selectbox("Select your timezone", timeZones)
         if selectedTimeZone:
-            while True:
-                now = datetime.now(ZoneInfo(selectedTimeZone))
-                if now.hour < 12:
-                    st.badge("Good morning", icon="☀️", color="yellow")
-                elif now.hour == 12:
-                    st.badge("Good afternoon!", icon="🔥", color="red")
-                elif now.hour > 12 and now.hour < 20:
-                    st.badge("Good evening", icon="🌅", color="yellow")
-                elif now.hour >= 20:
-                    st.badge("Good night!", icon="🌕", color="blue")
-                st.metric(
-                    f"Current time", now.strftime("%I:%M %p"), delta=selectedTimeZone
-                )
-                t.sleep(1)
-                st.metric("Current date", now.strftime("%A, %B, %d, %Y"))
+            now = datetime.now(ZoneInfo(selectedTimeZone))
+            if now.hour < 12:
+                st.badge("Good morning", icon="☀️", color="yellow")
+            elif now.hour == 12:
+                st.badge("Good afternoon!", icon="🔥", color="red")
+            elif now.hour > 12 and now.hour < 20:
+                st.badge("Good evening", icon="🌅", color="yellow")
+            elif now.hour >= 20:
+                st.badge("Good night!", icon="🌕", color="blue")
+            st.metric(f"Current time", now.strftime("%I:%M %p"), delta=selectedTimeZone)
+            t.sleep(1)
+            st.metric("Current date", now.strftime("%A, %B, %d, %Y"))
     choice = st.selectbox(
         "Choice",
         choiceList,

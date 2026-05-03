@@ -386,8 +386,7 @@ def returnCalc():
 
         st.metric(
             f"Return percentage (1 yr) for selected stock",
-            f"{st.session_state.availableStocks[stock_choice]["Return percentage gained on selling"
-]}%",
+            f"{st.session_state.availableStocks[stock_choice]["Return percentage gained on selling"]}%",
         )
         st.divider()
 

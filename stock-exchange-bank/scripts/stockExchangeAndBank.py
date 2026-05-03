@@ -127,7 +127,7 @@ if "userDict" not in st.session_state:
     }
 
 if "availableStocks" not in st.session_state:
-    monthsUnordered = ["January", "February", "March", "April", "May", "June"]
+    monthsUnordered = ['January", "February", "March", "April", "May", "June']
     months = pd.Categorical(
         monthsUnordered,
         categories=monthsUnordered,
@@ -386,7 +386,7 @@ def returnCalc():
 
         st.metric(
             f"Return percentage (1 yr) for selected stock",
-            f"{st.session_state.availableStocks[stock_choice]["Return percentage gained on selling"]}%",
+            f"{st.session_state.availableStocks[stock_choice]['Return percentage gained on selling']}%",
         )
         st.divider()
 
@@ -402,7 +402,7 @@ def returnCalc():
             st.metric(
                 "Return output",
                 f"{ret_output:.2f} INR",
-                delta=f"{ st.session_state.availableStocks[stock_choice]["Return percentage gained on selling"
+                delta=f"{ st.session_state.availableStocks[stock_choice]['Return percentage gained on selling'
 ]:.2f}%",
             )
         st.divider()
@@ -486,7 +486,7 @@ def portfolioAndSelling():
                     )
                     st.divider()
 
-        t1, t2 = st.tabs(["Stock overview", "Selling"])
+        t1, t2 = st.tabs(['Stock overview", "Selling'])
         with t1:
             with st.container(border=True):
                 st.subheader("Stock overview")
@@ -509,7 +509,7 @@ def portfolioAndSelling():
                                             i
                                         ].items(),
                                     ),
-                                    columns=["Categories", "Details"],
+                                    columns=['Categories", "Details'],
                                 )
                                 st.dataframe(bSDf, hide_index=True)
                 with t4:
@@ -637,7 +637,7 @@ def inStructions():
 
 
 def bankManagement():
-    st.title(f"Welcome, {st.session_state.userDict["Name"]}")
+    st.title(f"Welcome, {st.session_state.userDict['Name']}")
     names = [
         "Liam",
         "Noah",

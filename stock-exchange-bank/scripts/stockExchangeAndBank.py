@@ -127,7 +127,7 @@ if "userDict" not in st.session_state:
     }
 
 if "availableStocks" not in st.session_state:
-    monthsUnordered = ['January", "February", "March", "April", "May", "June']
+    monthsUnordered = ["January", "February", "March", "April", "May", "June"]
     months = pd.Categorical(
         monthsUnordered,
         categories=monthsUnordered,
@@ -370,7 +370,7 @@ def returnCalc():
         st.subheader("Return calculator")
         st.divider()
 
-        stock_choice = st.selectbox(
+        stockChoice = st.selectbox(
             "Choose a stock",
             list(st.session_state.availableStocks.keys()),
         )
@@ -386,9 +386,9 @@ def returnCalc():
         st.divider()
 
         ret_output = (
-            st.session_state.availableStocks[stock_choice]["Price (1 share)"] * noShares
+            st.session_state.availableStocks[stockChoice]["Price (1 share)"] * noShares
         ) * (
-            st.session_state.availableStocks[stock_choice][
+            st.session_state.availableStocks[stockChoice][
                 "Return percentage gained on selling"
             ]
             / 100
@@ -397,7 +397,7 @@ def returnCalc():
             st.metric(
                 "Return output",
                 f"{ret_output:.2f} INR",
-                delta=f"Return percentage of selected stock: {st.session_state.availableStocks[stock_choice]['Return percentage gained on selling']:.2f}%",
+                delta=f"{st.session_state.availableStocks[stockChoice]['Return percentage gained on selling']:.2f}% is returned by {stockChoice}",
             )
         st.divider()
 

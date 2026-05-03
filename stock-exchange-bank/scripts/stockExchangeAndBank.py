@@ -41,6 +41,7 @@ instructions = [
     "Read the graphs and data carefully and buy or sell your stocks.",
     "Use the dropdowns for selecting stocks.",
     "Use the expanders for viewing your portfolio data at a glance.",
+    "Return percentage of money invested is gained along with the price of the share bought on selling multiplied by the number of shares bought.",
 ]
 if "gender" not in st.session_state:
     st.session_state.gender = random.choice(['Boy", "Girl'])
@@ -136,7 +137,7 @@ if "availableStocks" not in st.session_state:
         "RELIANCE": {
             "Name": "Reliance Industries Limited",
             "Price (1 share)": 2985.40 + random.randint(100, 100000),
-            "Return Percentage 1 yr": 18.50 - random.randint(-10, 10),
+            "Return percentage gained on selling]": 18.50 - random.randint(-10, 10),
             "6 month history": pd.DataFrame(
                 [2450.5, 2580.2, 2710.8, 2840.4, 2920.1, 2985.4],
                 index=months,
@@ -145,7 +146,7 @@ if "availableStocks" not in st.session_state:
         "HDFCBANK": {
             "Name": "HDFC Bank Limited",
             "Price (1 share)": 1642.15 - random.randint(100, 100000),
-            "Return Percentage 1 yr": 4.25 + random.randint(-10, 10),
+            "Return percentage gained on selling]": 4.25 + random.randint(-10, 10),
             "6 month history": pd.DataFrame(
                 [1520.0, 1480.4, 1550.6, 1610.3, 1630.8, 1642.15],
                 index=months,
@@ -154,7 +155,7 @@ if "availableStocks" not in st.session_state:
         "TCS": {
             "Name": "Tata Consultancy Services Limited",
             "Price (1 share)": 3950.60 + random.randint(100, 100000),
-            "Return Percentage 1 yr": 15.41 - random.randint(-10, 10),
+            "Return percentage gained on selling]": 15.41 - random.randint(-10, 10),
             "6 month history": pd.DataFrame(
                 [3410.2, 3550.5, 3680.1, 3820.9, 3910.4, 3950.6],
                 index=months,
@@ -163,7 +164,7 @@ if "availableStocks" not in st.session_state:
         "ICICIBANK": {
             "Name": "ICICI Bank Limited",
             "Price (1 share)": 1125.40 - random.randint(100, 100000),
-            "Return Percentage 1 yr": 22.20 + random.randint(-10, 10),
+            "Return percentage gained on selling]": 22.20 + random.randint(-10, 10),
             "6 month history": pd.DataFrame(
                 [950.4, 990.8, 1040.2, 1080.6, 1110.1, 1125.4],
                 index=months,
@@ -172,7 +173,7 @@ if "availableStocks" not in st.session_state:
         "INFY": {
             "Name": "Infosys Limited",
             "Price (1 share)": 1545.90 + random.randint(100, 100000),
-            "Return Percentage 1 yr": 12.40 - random.randint(-10, 10),
+            "Return percentage gained on selling]": 12.40 - random.randint(-10, 10),
             "6 month history": pd.DataFrame(
                 [1380.1, 1420.4, 1460.7, 1490.3, 1520.9, 1545.9],
                 index=months,
@@ -181,7 +182,7 @@ if "availableStocks" not in st.session_state:
         "BHARTIARTL": {
             "Name": "Bharti Airtel Limited",
             "Price (1 share)": 1420.10 + random.randint(100, 100000),
-            "Return Percentage 1 yr": 65.10 - random.randint(-10, 10),
+            "Return percentage gained on selling]": 65.10 - random.randint(-10, 10),
             "6 month history": pd.DataFrame(
                 [880.2, 950.5, 1100.1, 1250.9, 1380.4, 1420.1],
                 index=months,
@@ -190,7 +191,7 @@ if "availableStocks" not in st.session_state:
         "SBIN": {
             "Name": "State Bank of India",
             "Price (1 share)": 785.00 - random.randint(100, 100000),
-            "Return Percentage 1 yr": 35.40 + random.randint(-10, 10),
+            "Return percentage gained on selling]": 35.40 + random.randint(-10, 10),
             "6 month history": pd.DataFrame(
                 [580.5, 620.2, 680.8, 720.4, 760.1, 785.0], index=months
             ),
@@ -198,7 +199,7 @@ if "availableStocks" not in st.session_state:
         "LICI": {
             "Name": "Life Insurance Corporation of India",
             "Price (1 share)": 1015.45 + random.randint(100, 100000),
-            "Return Percentage 1 yr": 72.86 - random.randint(-10, 10),
+            "Return percentage gained on selling]": 72.86 - random.randint(-10, 10),
             "6 month history": pd.DataFrame(
                 [610.1, 680.4, 820.1, 940.5, 990.3, 1015.45], index=months
             ),
@@ -206,7 +207,7 @@ if "availableStocks" not in st.session_state:
         "ITC": {
             "Name": "ITC Limited",
             "Price (1 share)": 435.65 + random.randint(100, 100000),
-            "Return Percentage 1 yr": 5.77 - random.randint(-10, 10),
+            "Return percentage gained on selling]": 5.77 - random.randint(-10, 10),
             "6 month history": pd.DataFrame(
                 [410.8, 425.4, 440.1, 455.6, 442.2, 435.65], index=months
             ),
@@ -214,7 +215,7 @@ if "availableStocks" not in st.session_state:
         "MARUTI": {
             "Name": "Maruti Suzuki India Limited",
             "Price (1 share)": 12500.00 + random.randint(100, 100000),
-            "Return Percentage 1 yr": 32.15 - random.randint(-10, 10),
+            "Return percentage gained on selling]": 32.15 - random.randint(-10, 10),
             "6 month history": pd.DataFrame(
                 [9500.0, 10200.5, 11000.2, 11800.8, 12200.1, 12500.0], index=months
             ),
@@ -271,7 +272,7 @@ def buyingAndStats():
             st.divider()
 
             retpr = [
-                float(x["Return Percentage 1 yr"])
+                float(x["Return percentage gained on selling]"])
                 for x in st.session_state.availableStocks.values()
             ]
             retPerSort = list(sorted(retpr, reverse=True))
@@ -281,7 +282,7 @@ def buyingAndStats():
                 sorted(
                     list(st.session_state.availableStocks.keys()),
                     key=lambda k: st.session_state.availableStocks[k][
-                        "Return Percentage 1 yr"
+                        "Return percentage gained on selling]"
                     ],
                     reverse=True,
                 ),
@@ -334,7 +335,7 @@ def buyingAndStats():
                     * noS
                 ) * (
                     st.session_state.userDict["Bought stocks"][buyStock][
-                        "Return Percentage 1 yr"
+                        "Return percentage gained on selling]"
                     ]
                     / 100
                 ) + (
@@ -385,21 +386,25 @@ def returnCalc():
 
         st.metric(
             f"Return percentage (1 yr) for selected stock",
-            f"{st.session_state.availableStocks[stock_choice]["Return Percentage 1 yr"]}%",
+            f"{st.session_state.availableStocks[stock_choice]["Return percentage gained on selling]"
+]}%",
         )
         st.divider()
 
         ret_output = (
             st.session_state.availableStocks[stock_choice]["Price (1 share)"] * noShares
         ) * (
-            st.session_state.availableStocks[stock_choice]["Return Percentage 1 yr"]
+            st.session_state.availableStocks[stock_choice][
+                "Return percentage gained on selling]"
+            ]
             / 100
         )
         with st.container(border=True):
             st.metric(
                 "Return output",
                 f"{ret_output:.2f} INR",
-                delta=f"{ st.session_state.availableStocks[stock_choice]["Return Percentage 1 yr"]:.2f}%",
+                delta=f"{ st.session_state.availableStocks[stock_choice]["Return percentage gained on selling]"
+]:.2f}%",
             )
         st.divider()
 
@@ -450,7 +455,7 @@ def portfolioAndSelling():
             )
         )
         totPL = sum(
-            s["Return Percentage 1 yr"]
+            s["Return percentage gained on selling]"]
             / 100
             * s["Price (1 share)"]
             * s["No of shares bought"]
@@ -576,7 +581,7 @@ def portfolioAndSelling():
                             * noS
                         ) * (
                             st.session_state.userDict["Bought stocks"][sellStock][
-                                "Return Percentage 1 yr"
+                                "Return percentage gained on selling]"
                             ]
                             / 100
                         ) + (
@@ -595,7 +600,7 @@ def portfolioAndSelling():
                             )
                             * (
                                 st.session_state.userDict["Bought stocks"][sellStock][
-                                    "Return Percentage 1 yr"
+                                    "Return percentage gained on selling]"
                                 ]
                                 / 100
                             )
@@ -627,7 +632,7 @@ def inStructions():
             st.write(f"Your PIN is {st.session_state.userDict['PIN']}")
             t.sleep(5)
         ph.empty()
-    st.info(
+    st.caption(
         "This game is purely made for educational purposes. No misuse cases are attributed to the developer."
     )
 

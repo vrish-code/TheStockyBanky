@@ -224,7 +224,8 @@ if "availableStocks" not in st.session_state:
 if "stock_df" not in st.session_state:
     avStocksCopy=c.deepcopy(st.session_state.availableStocks)
     for x in avStocksCopy:
-        avStocksCopy[x]["6 month history"]=list(pd.to_dict(st.session_state.availableStocks[x]["6 month history"])).values()
+        month6HistCopy=pd.DataFrame(st.session_state.availableStocks[x]["6 month history"])
+        avStocksCopy[x]["6 month history"]=list(month6HistCopy.to_dict(orient="index")).values()
     stockDf=pd.DataFrame.from_dict(avStocksCopy, orient="index")
 def buyingAndStats():
     st.title("View available stocks!")

@@ -222,13 +222,10 @@ if "availableStocks" not in st.session_state:
     }
 
 if "stock_df" not in st.session_state:
-    st.session_state.stock_df = (
-        pd.DataFrame.from_dict(st.session_state.availableStocks, orient="index")
-        .reset_index()
-        .rename(columns={"index": "Ticker"})
-    )
-
-
+    avStocksCopy=c.deepcopy(st.session_state.availableStocks)
+    for x in avStocksCopy:
+        avStocksCopy[x]["6 month history"]=list(pd.to_dict(st.session_state.availableStocks[x]["6 month history"])).values()
+    stockDf=pd.DataFrame.from_dict(avStocksCopy, orient="index")
 def buyingAndStats():
     st.title("View available stocks!")
     st.divider()
@@ -243,7 +240,7 @@ def buyingAndStats():
         with c1:
             st.subheader("Overview of stocks")
             st.divider()
-            st.dataframe(st.session_state.stock_df, hide_index=True)
+            st.dataframe(st.session_state.stockDf, hide_index=True)
             st.divider()
 
             f, a = plt.subplots()
